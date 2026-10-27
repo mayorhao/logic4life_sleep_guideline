@@ -17,7 +17,7 @@ The back-translation experiment reconstructs clinician-facing English descriptio
 
 ## Prompts and code
 
-The materials to be released include:
+The implementation is available as a single Python file: [back_translation.py](back_translation.py). It includes:
 
 - **Generation prompts:** the instructions for translating QEL formulas into English, a controlled terminology map, an example, and the structured input/output format.
 - **Back-translation code:** asynchronous generation of repeated translations for each rule, with structured JSON outputs containing the generated text, individual clauses, assumptions, and warnings.
@@ -25,9 +25,54 @@ The materials to be released include:
 
 For each rule, the generation input contains its identifier, event name, QEL formula, and any supporting macro definitions. The source narrative is reserved for evaluation and is not included in the generation payload. The prompt instructs the model to preserve numeric thresholds, durations, negations, and temporal relationships using the supplied terminology.
 
+## Usage
+
+Use Python 3.10 or newer. Install the generation dependencies and set `OPENAI_API_KEY` in your environment:
+
+```bash
+python -m pip install openai "pydantic>=2"
+```
+
+Provide the formulas and reference narratives in a JSON file. The following `rules.json` is a synthetic example demonstrating the input format:
+
+```json
+{
+  "rules": [
+    {
+      "id": 1,
+      "name": "Example sleep event",
+      "formula": "\\exists x\\, (\\Box_{10}\\,\\mathrm{Sleep})_x",
+      "reference_text": "Score Example sleep event if the subject is asleep continuously for at least 10 seconds.",
+      "macro_definitions": {}
+    }
+  ]
+}
+```
+
+Each rule requires a unique positive integer `id` and nonempty `name`, `formula`, and `reference_text` strings. Optional fields are `macro_definitions` (a string-to-string map), `supporting_rule_ids` (a list of integers), and `formula_warnings` (a list of strings). Include any referenced macro definitions needed to interpret a formula.
+
+Validate the input, inspect the embedded prompt, or run generation and evaluation:
+
+```bash
+python back_translation.py --input rules.json --validate-only
+python back_translation.py --print-prompt
+python back_translation.py --input rules.json --output-dir results
+```
+
+Validation and prompt inspection work without an API key or third-party packages. Generation calls the OpenAI API; reference narratives are sent to the embedding model during evaluation. By default, the script generates 40 translations for every rule in the input. Use `--rule-ids`, `--runs`, `--concurrency`, and the model options to customize a run; `--help` lists all options. Choose a new or empty output directory for each run.
+
+Outputs are:
+
+- `detailed_results.csv`: one row per rule and run, including `back_translation`, `back_translation_clauses`, the reference text in `gold_text`, and evaluation metrics.
+- `summary_by_rule.csv`: means, standard deviations, and confidence intervals for each rule.
+- `summary_overall.json`: overall metrics and experiment settings.
+- `raw_outputs/`: structured model responses for individual translations.
+
+Lexical similarity uses character-level sequence matching. ROUGE-L uses case-sensitive whitespace tokens. Bootstrap intervals resample the 40 outputs within each rule, and the pooled outputs for the overall summary, with 5,000 resamples, 95% confidence, and seed 42 by default. The seed controls bootstrap resampling; it does not make model generation deterministic.
+
 ## Experiment configuration
 
-The final pinned experiment is identified as `v99_pinned` in the research outputs.
+The script defaults match the model and sampling configuration used in the study.
 
 | Setting | Value |
 | --- | --- |
