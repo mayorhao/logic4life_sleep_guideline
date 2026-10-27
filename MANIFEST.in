@@ -1,0 +1,4 @@
+include requirements.txt requirements-dev.txt back_translation.py CITATION.cff .env.example
+recursive-include config *.json
+recursive-include examples *.json
+recursive-include tests *.py

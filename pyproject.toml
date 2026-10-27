@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "logic4life-sleep-guideline"
+version = "0.1.0"
+description = "QEL back-translation and evaluation for sleep-scoring guidelines"
+readme = "README.md"
+requires-python = ">=3.10"
+dynamic = ["dependencies"]
+authors = [{name = "Jiahao Fan"}]
+keywords = ["sleep", "temporal-logic", "QEL", "back-translation"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+]
+
+[project.urls]
+Repository = "https://github.com/mayorhao/logic4life_sleep_guideline"
+Paper = "https://arxiv.org/abs/2607.21331"
+Issues = "https://github.com/mayorhao/logic4life_sleep_guideline/issues"
+
+[project.scripts]
+logic4life-sleep = "logic4life_sleep.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}

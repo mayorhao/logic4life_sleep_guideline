@@ -1,0 +1,11 @@
+{
+  "rules": [
+    {
+      "id": 1,
+      "name": "Example sleep event",
+      "formula": "\\exists x\\, (\\Box_{10}\\,\\mathrm{Sleep})_x",
+      "reference_text": "Score Example sleep event if the subject is asleep continuously for at least 10 seconds.",
+      "macro_definitions": {}
+    }
+  ]
+}

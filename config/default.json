@@ -1,0 +1,11 @@
+{
+  "generation_model": "gpt-5-mini-2025-08-07",
+  "embedding_model": "text-embedding-3-small",
+  "runs": 40,
+  "concurrency": 16,
+  "embedding_batch_size": 128,
+  "max_attempts": 5,
+  "bootstrap_samples": 5000,
+  "confidence": 0.95,
+  "seed": 42
+}
