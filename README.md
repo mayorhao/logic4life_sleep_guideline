@@ -8,7 +8,6 @@ Jiahao Fan, Xiaojin Li, Yan Huang, Xubing Hao, Licong Cui, and Guo-Qiang Zhang
 
 *Proceedings of the 2026 American Medical Informatics Association Symposium, to appear.*
 
-**Release status:** This initial release contains the README. The prompt and code files will be added in a subsequent update.
 
 ## Overview
 
@@ -37,13 +36,11 @@ The final pinned experiment is identified as `v99_pinned` in the research output
 | Scoring rules | 12 |
 | Generations per rule | 40 |
 | Total back-translations | 480 |
-| Bootstrap resamples | 5,000 |
-| Confidence interval | 95% |
-| Bootstrap seed | 42 |
+
 
 ## Back-translation results
 
-Overall results from `v99_pinned` are shown below. Similarity scores are reported on a 0–100 scale.
+Overall results
 
 | Metric | Mean | 95% confidence interval |
 | --- | ---: | ---: |
